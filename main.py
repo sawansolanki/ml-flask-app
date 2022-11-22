@@ -19,7 +19,8 @@ def predict_survival():
     age=int(request.form.get('age'))
     fare=int(request.form.get('fare'))
     
-    result = model.predict(np.array([pclass,sex,age,fare]).reshape(1,4))
+    result = model.predict([pclass,sex,age,fare])
+    #result = model.predict(np.array([pclass,sex,age,fare]).reshape(1,4))
     
     if result==1:
         result="Alive"
