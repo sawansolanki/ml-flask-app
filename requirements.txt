@@ -1,4 +1,4 @@
 unittest2
 flask
 pickle4
-numpy==1.21.5
+
