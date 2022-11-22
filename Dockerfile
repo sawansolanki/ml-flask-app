@@ -1,5 +1,5 @@
 # start by pulling the python image
-FROM FROM python:3.9
+FROM python:3.9
 
 # copy the requirements file into the image
 COPY ./requirements.txt /app/requirements.txt
