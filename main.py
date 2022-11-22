@@ -1,6 +1,6 @@
 from unittest2 import result
 from flask import Flask , render_template , request
-import numpy as np
+# import numpy as np
 import pickle4 as pickle
 
 model=pickle.load(open('titanic_model_lr_Sa1','rb'))
