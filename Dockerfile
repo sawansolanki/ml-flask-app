@@ -11,7 +11,7 @@ WORKDIR /app
 
 RUN pip install -r requirements.txt
 
-EXPOSE 8090
+EXPOSE 5000
 
 # copy every content from the local file to the image
 COPY . /app
