@@ -28,11 +28,11 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
       
       - run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          #curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
           sudo apt-get update
           sudo apt-get install zip unzip
-          unzip awscliv2.zip
-          sudo ./aws/install
+          #unzip awscliv2.zip
+          #sudo ./aws/install
           export BUCKET="first-bucket-sa1"
           latest=$(aws s3 ls $BUCKET/modle-folder/ --recursive | sort | tail -n 1 | awk '{print $4}')
           aws s3 cp s3://$BUCKET/$latest .
