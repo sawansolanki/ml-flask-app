@@ -33,7 +33,7 @@ jobs:
           sudo apt-get install zip unzip
           #unzip awscliv2.zip
           #sudo ./aws/install
-          export BUCKET="first-bucket-sa1"
+          export BUCKET="first-bucket-sa2"
           latest=$(aws s3 ls $BUCKET/modle-folder/ --recursive | sort | tail -n 1 | awk '{print $4}')
           aws s3 cp s3://$BUCKET/$latest .
       
@@ -71,8 +71,8 @@ jobs:
           sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
           #create eksctl cluster
-          eksctl create cluster --name sa1-eks-cluster --region us-east-1 --node-type t2.micro --zones=us-east-1a,us-east-1b
-          aws eks update-kubeconfig --region us-east-1 --name sa1-eks-cluster
+          eksctl create cluster --name sa2-eks-cluster --region us-east-1 --node-type t2.micro --zones=us-east-1a,us-east-1b
+          aws eks update-kubeconfig --region us-east-1 --name sa2-eks-cluster
 
           #deploy pods and services
           kubectl apply -f deployment.yaml
