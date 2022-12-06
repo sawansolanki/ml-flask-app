@@ -1,0 +1,55 @@
+name: cluster-automate-aws
+#this workflow create eks cluster and deploy service using github actions
+on:
+  workflow_dispatch:
+  
+  push:
+    branches:
+      #automate-docker-image
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          
+          
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      
+      - run: |
+          #curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          sudo apt-get update
+          sudo apt-get install zip unzip
+          #unzip awscliv2.zip
+          #sudo ./aws/install
+          export BUCKET="first-bucket-sa1"
+          latest=$(aws s3 ls $BUCKET/modle-folder/ --recursive | sort | tail -n 1 | awk '{print $4}')
+          aws s3 cp s3://$BUCKET/$latest .
+          
+          #install eksctl
+          sudo apt-get update
+          curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+          sudo mv /tmp/eksctl /usr/local/bin
+
+          #install kubectl
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+          #create eksctl cluster
+          eksctl create cluster --name sa1-eks-cluster --region us-east-1 --node-type t2.micro --zones=us-east-1a,us-east-1b
+          aws eks update-kubeconfig --region us-east-1 --name sa1-eks-cluster
+
+          #deploy pods and services
+          kubectl apply -f deployment.yaml
+          kubectl apply -f service.yaml
