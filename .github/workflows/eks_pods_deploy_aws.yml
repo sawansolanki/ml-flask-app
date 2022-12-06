@@ -1,5 +1,5 @@
 name: cluster-automate-aws
-#this workflow create eks cluster and deploy service using github actions
+#this workflow create eks cluster and deploy service using github actions..
 on:
   workflow_dispatch:
   
