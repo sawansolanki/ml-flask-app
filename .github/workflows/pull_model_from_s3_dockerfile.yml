@@ -2,12 +2,7 @@ name: s3-model-pull-docker
 #comment
 
 on:
-  push:
-    branches:
-      automate-docker-image
-      
   workflow_dispatch:
-  
   
 
 jobs:
