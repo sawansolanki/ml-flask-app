@@ -1,11 +1,14 @@
 name: s3-model-pull-docker
 #comment
+
 on:
-  workflow_dispatch:
-  
   push:
     branches:
       automate-docker-image
+      
+  workflow_dispatch:
+  
+  
 
 jobs:
   docker:
