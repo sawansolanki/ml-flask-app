@@ -1,11 +1,8 @@
 name: cluster-automate-aws
-#this workflow create eks cluster and deploy service using github actions..
 on:
   workflow_dispatch:
   
-  push:
-    branches:
-      automate-docker-image
+
 
 jobs:
   docker:
