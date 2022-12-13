@@ -68,8 +68,8 @@ jobs:
           sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
           #create eksctl cluster
-          eksctl create cluster --name sa2-eks-cluster --region us-east-1 --node-type t2.micro --zones=us-east-1a,us-east-1b
-          aws eks update-kubeconfig --region us-east-1 --name sa2-eks-cluster
+          eksctl create cluster --name sa1-eks-cluster --region us-east-1 --node-type t2.micro --zones=us-east-1a,us-east-1b
+          aws eks update-kubeconfig --region us-east-1 --name sa1-eks-cluster
 
           #deploy pods and services
           kubectl apply -f deployment.yaml
