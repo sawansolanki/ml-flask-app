@@ -8,7 +8,7 @@ on:
       main
 
 env: 
-  ROOT_PATH: '${{github.workspace}}/AWS-ECR-to-EKS-Integration'
+  ROOT_PATH: '${{github.workspace}}'
   REPO_NAME: 'my-sa1-ecr-repo'
   ECR_REPOSITORY: my-sa1-ecr-repo
 
