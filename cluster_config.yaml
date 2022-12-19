@@ -1,0 +1,31 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: my-sa1-eks-cluster
+  region: us-east-1
+
+vpc:
+  id: vpc-0cbf48127b0315afe
+  cidr: "192.168.0.0/16"
+  subnets:
+    public:
+      MyStack-sa1-EcrEks-PublicSubnet01:
+        id: subnet-0fdbdd377c0669493
+      MyStack-sa1-EcrEks-PublicSubnet02:
+        id: subnet-0d2d2eb059fa12a63
+    private:
+      MyStack-sa1-EcrEks-PrivateSubnet01:
+        id: subnet-00f93bc9cf83e1a91
+      MyStack-sa1-EcrEks-PrivateSubnet02:
+        id: subnet-03681334e6731271a
+
+nodeGroups:
+  - name: EKS-public-workers
+    instanceType: t2.medium
+    desiredCapacity: 1
+  - name: EKS-private-workers
+    instanceType: t2.medium
+    desiredCapacity: 1
+    privateNetworking: true
+
+#eksctl create cluster -f cluster.yaml
