@@ -1,0 +1,55 @@
+name: shell-automate-complete
+#complete automation for ecr , eks , vpc and docker image using shell scripts
+on:
+  workflow_dispatch:
+  
+  push:
+    branches: 
+      main
+
+env: 
+  ROOT_PATH: '${{github.workspace}}/AWS-ECR-to-EKS-Integration'
+  REPO_NAME: 'my-sa1-ecr-repo'
+  ECR_REPOSITORY: my-sa1-ecr-repo
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clone
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+      
+    - name: repo-shell
+      run: |
+        export REPO_NAME=my-sa1-ecr-repo
+        sudo apt-get install less
+        chmod 755 ecr-create.sh
+        ./ecr-create.sh
+        
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+        
+        
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      working-directory : ${{env.ROOT_PATH}}
+      run: |
+        echo "ecr name - " $ECR_REGISTRY
+        echo "repo name - " $REPO_NAME
+        echo "ecr-repo - " $ECR_REGISTRY/$REPO_NAME 
+        echo "env variable - " ${{ steps.login-ecr.outputs}}
+        export IMAGE_TAG="latest"
+        export IMAGE_NAME="myimg"
+        docker build  -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
