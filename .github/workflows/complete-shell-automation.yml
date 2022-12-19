@@ -82,8 +82,8 @@ jobs:
          
      - name: execute eks script
        run: |
-        chmod 755 eks-script.sh
         chmod 755 dependency.sh
+        chmod 755 eks-script.sh
         sudo apt-get install less
         ./dependency.sh
         ./eks-script.sh
