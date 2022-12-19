@@ -50,15 +50,17 @@ jobs:
         echo "ecr-repo - " $ECR_REGISTRY/$REPO_NAME 
         echo "env variable - " ${{ steps.login-ecr.outputs}}
         export IMAGE_TAG="latest"
-        export IMAGE_NAME="myimg"
+        export BUCKET="first-bucket-sa2"
+        latest=$(aws s3 ls $BUCKET/modle-folder/ --recursive | sort | tail -n 1 | awk '{print $4}')
+        aws s3 cp s3://$BUCKET/$latest .
         docker build  -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         
     - name: Deploy to AWS CFT VPC
       run: | 
         chmod 755 stack-script.sh
-        sudo apt-get install less
-        ./ecr-create.sh
+        #sudo apt-get install less
+        ./stack-script.sh
         
   eks-setup:
      needs: build-ecr-vpc
@@ -80,10 +82,11 @@ jobs:
          
      - name: execute eks script
        run: |
-        chmod 755 eks-cluster-script.sh
+        chmod 755 eks-script.sh
         chmod 755 dependency.sh
+        sudo apt-get install less
         ./dependency.sh
-        ./eks-cluster-script.sh
+        ./eks-script.sh
 
         
         
