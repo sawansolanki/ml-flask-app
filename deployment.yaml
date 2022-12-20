@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: back-end
-          image: 256537223841.dkr.ecr.us-east-1.amazonaws.com/my-sa1-ecr-repo
+          image: 256537223841.dkr.ecr.us-east-1.amazonaws.com/my-sa1-ecr-repo:latest
           ports:
             - containerPort: 5000
