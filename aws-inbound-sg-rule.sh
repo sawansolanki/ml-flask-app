@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sg_id=sg-09d56c064f5936e41
+sg_id=sg-03e1efd9796ca3fe4
 Protocol=tcp
 port=31479
 cidr=0.0.0.0/0
