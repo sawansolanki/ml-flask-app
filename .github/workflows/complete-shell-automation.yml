@@ -84,9 +84,17 @@ jobs:
        run: |
         chmod 755 dependency.sh
         chmod 755 eks-script.sh
+        chmod 755 aws-inbound-sg-rule.sh
         sudo apt-get install less
         ./dependency.sh
         ./eks-script.sh
+        ./aws-inbound-sg-rule.sh
+        
+     - name: deploy-dockerimage-k8s
+       run: |
+        aws eks update-kubeconfig --region us-east-1 --name sa2-eks-cluster
+        kubectl apply -f deployement.yaml
+        kubectl apply -f service.yaml
 
         
         
