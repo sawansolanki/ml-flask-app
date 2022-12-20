@@ -9,7 +9,7 @@ output=$(aws ec2 authorize-security-group-ingress     --group-id $sg_id     --pr
 
 if [ $? -ne 0 ]; then
   if echo ${output} | grep -q InvalidPermission.Duplicate; then
-        echo 'sg inbound rule for port $port already exist'
+        echo 'sg inbound rule for port '$port 'already exist'
 
   else
     >&2 echo "Error is -->" ${output}
