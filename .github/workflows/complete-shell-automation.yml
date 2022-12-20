@@ -100,8 +100,9 @@ jobs:
        run: | 
         #aws ecr get-login-password --region us-east-1 | docker login\
         #--username AWS --password-stdin 256537223841.dkr.ecr.us-east-1.amazonaws.com
-        docker login -u AWS https://632463603593.dkr.ecr.us-east-1.amazonaws.com\
-        -p $(aws ecr get-login-password --region us-east-1)
+        #docker login -u AWS https://632463603593.dkr.ecr.us-east-1.amazonaws.com\
+        #-p $(aws ecr get-login-password --region us-east-1)
+        aws ecr get-login-password | docker login --username AWS --password-stdin 632463603593.dkr.ecr.us-east-1.amazonaws.com
         
      - name: deploy-dockerimage-k8s
        run: |
