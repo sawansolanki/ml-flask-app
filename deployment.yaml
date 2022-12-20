@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: back-end
-          image: docker4saone/ml-app-s3-model-source
+          image: 256537223841.dkr.ecr.us-east-1.amazonaws.com/my-sa1-ecr-repo
           ports:
             - containerPort: 5000
