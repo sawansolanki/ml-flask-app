@@ -1,5 +1,7 @@
 name: shell-automate-complete
+
 #complete automation for ecr , eks , vpc and docker image using shell scripts
+
 on:
   workflow_dispatch:
   
@@ -13,7 +15,9 @@ env:
   ECR_REPOSITORY: my-sa1-ecr-repo
 
 jobs:
+
   build-ecr-vpc:
+  
     runs-on: ubuntu-latest
 
     steps:
@@ -41,6 +45,7 @@ jobs:
         
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
+      
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       working-directory : ${{env.ROOT_PATH}}
@@ -63,6 +68,7 @@ jobs:
         ./stack-script.sh
         
   eks-setup:
+  
      needs: build-ecr-vpc
      environment: approval-env-vpc
      name: cluster setup
