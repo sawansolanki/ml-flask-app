@@ -96,6 +96,11 @@ jobs:
         ./eks-script.sh
         ./aws-inbound-sg-rule.sh
         
+     - name: get-ecr-credentials
+       run: | 
+        aws ecr get-login-password --region us-east-1 | docker login\
+        --username AWS --password-stdin 256537223841.dkr.ecr.us-east-1.amazonaws.com
+        
      - name: deploy-dockerimage-k8s
        run: |
         aws eks update-kubeconfig --region us-east-1 --name my-sa1-eks-cluster
