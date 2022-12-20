@@ -111,7 +111,7 @@ jobs:
      - name: deploy-dockerimage-k8s
        run: |
         aws eks update-kubeconfig --region us-east-1 --name my-sa1-eks-cluster
-        kubectl apply -f deployement.yaml
+        kubectl apply -f deployment.yaml
         kubectl apply -f service.yaml
 
         
