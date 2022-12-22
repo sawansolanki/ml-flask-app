@@ -1,0 +1,19 @@
+on:
+  push:
+  
+name: env-var btwn jobs
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - run: |
+        EXPORT PORT=1234
+  job2:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - run: | 
+        echo $PORT
+
