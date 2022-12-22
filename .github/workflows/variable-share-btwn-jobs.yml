@@ -11,7 +11,7 @@ jobs:
     - run: |
         export ID=234344
         echo $ID
-        echo $ID >> $GITHUB_ENV
+        echo 'IDD=$ID' >> $GITHUB_ENV
         export PORT=1234 >> $GITHUB_ENV
         echo ${{env.PORT}}
   job2:
@@ -20,6 +20,6 @@ jobs:
     steps:
     
     - run: | 
-        echo $ID
+        echo $IDD
         echo ${{env.PORT}}
 
