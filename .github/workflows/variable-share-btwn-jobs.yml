@@ -10,12 +10,12 @@ jobs:
     
     - run: |
         export PORT=1234 >> $GITHUB_ENV
-        echo $env.PORT
+        echo ${{env.PORT}}
   job2:
     runs-on: ubuntu-latest
     needs: job1
     steps:
     
     - run: | 
-        echo $env.PORT
+        echo ${{env.PORT}}
 
