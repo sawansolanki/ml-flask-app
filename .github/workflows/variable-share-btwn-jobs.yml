@@ -9,11 +9,11 @@ jobs:
     steps:
     
     - run: |
-        export ID=234344
-        echo $ID
+        ID=234344
+        
         echo 'IDD=$ID' >> $GITHUB_ENV
         export PORT=1234 >> $GITHUB_ENV
-        echo ${{env.PORT}}
+        echo "port env variable ->" ${{env.PORT}}
     - run: |
         echo "the env var from previous step is --> " ${{env.IDD}}
   job2:
