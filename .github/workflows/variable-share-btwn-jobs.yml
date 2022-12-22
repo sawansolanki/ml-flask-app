@@ -9,7 +9,7 @@ jobs:
     steps:
     
     - run: |
-        EXPORT PORT='1234'
+        sudo EXPORT PORT='1234'
   job2:
     runs-on: ubuntu-latest
     needs: job1
