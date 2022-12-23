@@ -6,6 +6,9 @@ name: env-var btwn jobs
 jobs:
   job1:
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.step1.outputs.test }}
+      output2: ${{ steps.step2.outputs.test }}
     steps:
     
 #     - run: |
@@ -25,6 +28,15 @@ jobs:
       id: step_two
       run: |
         echo "${{ env.action_state }}"
+    
+    - id: send to another job
+      run: |
+        echo "test=hello" >> $GITHUB_OUTPUT
+    - id: send to another job 2
+      run: |
+        world="sawan"
+        echo "test=$world" >> $GITHUB_OUTPUT
+
   job2:
     runs-on: ubuntu-latest
     needs: job1
