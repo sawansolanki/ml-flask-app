@@ -45,3 +45,4 @@ jobs:
     - run: | 
         echo "output from job 1 is --> " ${{needs.job1.outputs.output1}}
         echo "output from job 1 is --> " ${{needs.job1.outputs.output2}}
+        echo "output from job 1 is --> " ${{job1.outputs.output1}}
