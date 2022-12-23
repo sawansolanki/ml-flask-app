@@ -43,8 +43,5 @@ jobs:
     steps:
     
     - run: | 
-        #echo "the env var from previous job is --> " ${{env.IDD}}
-        #echo ${{env.PORT}}
-        echo "the env var from previous job is -->" "${{ env.action_state }}"
-        echo "${{ env.action_state }}"
-
+        echo "output from job 1 is --> " ${{needs.job1.outputs.output1}}
+        echo "output from job 1 is --> " ${{needs.job1.outputs.output2}}
