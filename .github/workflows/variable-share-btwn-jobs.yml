@@ -7,8 +7,8 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     outputs:
-      output1: ${{ steps.step1.outputs.test }}
-      output2: ${{ steps.step2.outputs.test }}
+      output1: ${{ steps.send2job2.outputs.test }}
+      output2: ${{ steps.send2step.outputs.test }}
     steps:
     
 #     - run: |
@@ -29,10 +29,10 @@ jobs:
       run: |
         echo "${{ env.action_state }}"
     
-    - id: send to another job
+    - id: send2job2
       run: |
         echo "test=hello" >> $GITHUB_OUTPUT
-    - id: send to another job 2
+    - id: send2step
       run: |
         world="sawan"
         echo "test=$world" >> $GITHUB_OUTPUT
