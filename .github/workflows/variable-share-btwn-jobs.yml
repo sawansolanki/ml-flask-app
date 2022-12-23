@@ -8,20 +8,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-    - run: |
-        ID=234344
+#     - run: |
+#         ID=234344
         
-        echo 'IDD=$ID' >> $GITHUB_ENV
-        export PORT=1234 >> $GITHUB_ENV
-        echo "port env variable ->" ${{env.PORT}}
-    - run: |
-        echo "the env var from previous step is --> " ${{env.IDD}}
+#         echo 'IDD=$ID' >> $GITHUB_ENV
+#         export PORT=1234 >> $GITHUB_ENV
+#         echo "port env variable ->" ${{env.PORT}}
+#     - run: |
+#         echo "the env var from previous step is --> " ${{env.IDD}}
+        
+    - name: Set the value
+      id: step_one
+      run: |
+        echo "action_state=yellow" >> $GITHUB_ENV
+    - name: Use the value
+      id: step_two
+      run: |
+        echo "${{ env.action_state }}"
   job2:
     runs-on: ubuntu-latest
     needs: job1
     steps:
     
     - run: | 
-        echo "the env var from previous job is --> " ${{env.IDD}}
-        echo ${{env.PORT}}
+        #echo "the env var from previous job is --> " ${{env.IDD}}
+        #echo ${{env.PORT}}
+        echo "the env var from previous job is -->" "${{ env.action_state }}"
 
