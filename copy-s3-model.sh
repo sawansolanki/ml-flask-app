@@ -6,6 +6,8 @@ PREFIX="model-output"
 
 FILE="$(aws s3 ls $BUCKET/$PREFIX/ --recursive | grep $MODELFILE | sort | tail -n 1 | awk '{print $4}')"
 #add BUCKET NOT EXIST PART
+#aws s3api describe-bucket --bucket BucketName 
+
 END="ml-model.txt"
 
 n=${#FILE} 
