@@ -20,11 +20,11 @@ if [ $n -eq 0 ]; then
 elif [ $n -gt 0 ]; then
     if grep -q "$END" <<< "$FILE"; then
         echo "fl -->" $FILE;
-        #aws s3 cp s3://$BUCKET/$FILE .
+        aws s3 cp s3://$BUCKET/$FILE .
         echo "the file copied is correct";
     
     else
         echo "fetched wrong file --> " $FILE
-        exit 1
+        exit 100
     fi
 fi
