@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BUCKET="first-bucket-sa11"
+BUCKET="first-bucket-sa2"
 MODELFILE="ml-model.txt"
 PREFIX="model-output"
 
