@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sudo apt-get install ca-certificates
+echo y | sudo apt-get install ca-certificates
 #curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 sudo apt-get update
 #sudo apt-get install zip unzip
