@@ -1,23 +1,31 @@
 #!/bin/bash
 
-BUCKET="ml-model-ket"
+BUCKET="first-bucket-sa11"
 MODELFILE="ml-model.txt"
 PREFIX="model-output"
 
 FILE="$(aws s3 ls $BUCKET/$PREFIX/ --recursive | grep $MODELFILE | sort | tail -n 1 | awk '{print $4}')"
-#####
-#add BUCKET NOT EXIST PART
-#aws s3api describe-bucket --bucket BucketName 
-output=$( aws s3api describe-bucket --bucket ${BUCKET}  2>&1)
-#output="asdfsd dfsdf fd df f BucketNotFound"
-echo $output
 
-#if [ $? -eq 0 ]; then
-if echo ${output} | grep -q BucketNotFound; then
-    echo "bucket does not exist"
-    exit 1
+#####
+bucketstatus=$(aws s3api head-bucket --bucket "${BUCKET}" 2>&1)
+
+if echo "${bucketstatus}" | grep 'Not Found';
+then
+  echo "bucket doesn't exist";
+  >&2 echo ${bucketstatus}
+  
+elif echo "${bucketstatus}" | grep 'Forbidden';
+then
+  echo "Bucket exists but not owned"
+  >&2 echo ${bucketstatus}
+  
+elif echo "${bucketstatus}" | grep 'Bad Request';
+then
+  echo "Bucket name specified is less than 3 or greater than 63 characters"
+  >&2 echo ${bucketstatus}
+  
 else
-    echo "bucket exists"
+  echo "Bucket owned and exists";
 fi
 #####
 
