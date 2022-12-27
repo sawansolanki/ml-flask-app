@@ -1,8 +1,10 @@
 #!/bin/bash
 
 BUCKET="first-bucket-sa2"
-MODELFILE="ml-model.txt"
-PREFIX="model-output"
+MODELFILE="titanic_model_lr_Sa1"
+
+PREFIX="modle-folder"
+END="titanic_model_lr_Sa1"
 
 FILE="$(aws s3 ls $BUCKET/$PREFIX/ --recursive | grep $MODELFILE | sort | tail -n 1 | awk '{print $4}')"
 
@@ -28,8 +30,6 @@ else
   echo "Bucket owned and exists";
 fi
 #####
-
-END="ml-model.txt"
 
 n=${#FILE} 
 
