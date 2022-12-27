@@ -1,0 +1,114 @@
+name: all-shell-script-workflow
+
+#complete automation for ecr , eks , vpc and docker image using shell scripts
+
+on:
+  workflow_dispatch:
+  
+  push:
+    branches: 
+      main
+
+env: 
+  ROOT_PATH: '${{github.workspace}}'
+  REPO_NAME: 'my-sa1-ecr-repo'
+  ECR_REPOSITORY: my-sa1-ecr-repo
+
+jobs:
+
+  build-ecr-vpc:
+  
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clone
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+      
+    - name: repo-shell
+      run: |
+        export REPO_NAME=my-sa1-ecr-repo
+        sudo apt-get install less
+        chmod 755 ecr-script.sh
+        ./ecr-script.sh
+        
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+        
+        
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      working-directory : ${{env.ROOT_PATH}}
+      run: |
+        echo "ecr name - " $ECR_REGISTRY
+        echo "repo name - " $REPO_NAME
+        echo "ecr-repo - " $ECR_REGISTRY/$REPO_NAME 
+        echo "env variable - " ${{ steps.login-ecr.outputs}}
+        export IMAGE_TAG="latest"
+        chmod 755 copy-s3-model.sh
+        ./copy-s3-model.sh
+        docker build  -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        
+    - name: Deploy to AWS CFT VPC
+      run: | 
+        chmod 755 stack-script.sh
+        #sudo apt-get install less
+        ./stack-script.sh
+        
+  eks-setup:
+  
+     needs: build-ecr-vpc
+     environment: approval-env-vpc
+     name: cluster setup
+     runs-on: ubuntu-latest
+
+     steps:
+
+     - name: Check out code
+       uses: actions/checkout@v2
+
+     - name: Configure AWS credentials
+       uses: aws-actions/configure-aws-credentials@v1
+       with:
+         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         aws-region: us-east-1
+         
+     - name: execute eks script
+       run: |
+        chmod 755 dependency.sh
+        chmod 755 eks-script.sh
+        chmod 755 aws-inbound-sg-rule.sh
+        sudo apt-get install less
+        ./dependency.sh
+        ./eks-script.sh
+        ./aws-inbound-sg-rule.sh
+        
+     - name: Login to Amazon ECR
+       id: login-ecr
+       uses: aws-actions/amazon-ecr-login@v1
+        
+     - name: get-ecr-credentials
+       run: | 
+        #aws ecr get-login-password --region us-east-1 | docker login\
+        #--username AWS --password-stdin 256537223841.dkr.ecr.us-east-1.amazonaws.com
+        #docker login -u AWS https://632463603593.dkr.ecr.us-east-1.amazonaws.com\
+        #-p $(aws ecr get-login-password --region us-east-1)
+        #aws ecr get-login-password | docker login --username AWS --password-stdin 632463603593.dkr.ecr.us-east-1.amazonaws.com
+        
+     - name: deploy-dockerimage-k8s
+       run: |
+        aws eks update-kubeconfig --region us-east-1 --name my-sa1-eks-cluster
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml
